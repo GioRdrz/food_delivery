@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from decimal import Decimal
+from uuid import UUID
 
 
 class CouponBase(BaseModel):
@@ -23,7 +24,7 @@ class CouponUpdate(BaseModel):
 
 class CouponResponse(CouponBase):
     """Schema for coupon response."""
-    id: int
+    id: UUID
     is_active: bool
 
     model_config = ConfigDict(from_attributes=True)

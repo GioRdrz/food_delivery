@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from decimal import Decimal
+from uuid import UUID
 
 
 class MealBase(BaseModel):
@@ -12,7 +13,7 @@ class MealBase(BaseModel):
 
 class MealCreate(MealBase):
     """Schema for creating a meal."""
-    restaurant_id: int
+    restaurant_id: UUID
 
 
 class MealUpdate(BaseModel):
@@ -25,8 +26,8 @@ class MealUpdate(BaseModel):
 
 class MealResponse(MealBase):
     """Schema for meal response."""
-    id: int
-    restaurant_id: int
+    id: UUID
+    restaurant_id: UUID
     is_blocked: bool
 
     model_config = ConfigDict(from_attributes=True)

@@ -1,21 +1,23 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Numeric, Boolean
+from sqlalchemy import Column, String, ForeignKey, Numeric, Boolean
 from sqlalchemy.orm import relationship
+import uuid
 
 from app.database import Base
+from app.database_types import GUID
 
 
 class Meal(Base):
     """Meal model."""
-    
+
     __tablename__ = "meals"
-    
-    id = Column(Integer, primary_key=True, index=True)
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
     name = Column(String, nullable=False, index=True)
     description = Column(String, nullable=True)
     price = Column(Numeric(10, 2), nullable=False)
-    restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
+    restaurant_id = Column(GUID, ForeignKey("restaurants.id"), nullable=False)
     is_blocked = Column(Boolean, default=False, nullable=False)
-    
+
     # Relationships
     restaurant = relationship("Restaurant", back_populates="meals")
     order_items = relationship("OrderItem", back_populates="meal")

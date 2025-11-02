@@ -6,6 +6,7 @@ A comprehensive food delivery service REST API built with FastAPI, featuring use
 
 - **JWT Authentication**: Secure token-based authentication
 - **Role-Based Access Control**: Three user roles (Customer, Restaurant Owner, Admin)
+- **UUID Primary Keys**: All entities use UUID for enhanced security and scalability
 - **Restaurant Management**: CRUD operations for restaurants
 - **Meal Management**: CRUD operations for meals
 - **Order Processing**: Complete order workflow with status tracking
@@ -128,9 +129,10 @@ If you prefer to use a local PostgreSQL installation, make sure it's running and
 
 6. **Run migrations**
    ```bash
-   alembic revision --autogenerate -m "Initial migration"
    alembic upgrade head
    ```
+
+   > **Note**: The database uses UUID primary keys. See [UUID_MIGRATION.md](UUID_MIGRATION.md) for details.
 
 ## Running the Application
 

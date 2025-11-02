@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional
+from uuid import UUID
 from app.models.user import UserRole
 
 
@@ -27,7 +28,7 @@ class UserUpdate(BaseModel):
 
 class UserResponse(UserBase):
     """Schema for user response."""
-    id: int
+    id: UUID
     role: UserRole
     is_active: bool
     is_blocked: bool

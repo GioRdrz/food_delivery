@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from uuid import UUID
 
 from app.database import get_db
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
@@ -35,7 +36,7 @@ def list_users(
 
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user(
-    user_id: int,
+    user_id: UUID,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
@@ -64,7 +65,7 @@ def create_user(
 
 @router.put("/{user_id}", response_model=UserResponse)
 def update_user(
-    user_id: int,
+    user_id: UUID,
     user_data: UserUpdate,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
@@ -77,7 +78,7 @@ def update_user(
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
-    user_id: int,
+    user_id: UUID,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):

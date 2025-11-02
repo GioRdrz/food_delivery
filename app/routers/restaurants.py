@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from uuid import UUID
 
 from app.database import get_db
 from app.schemas.restaurant import RestaurantCreate, RestaurantUpdate, RestaurantResponse
@@ -53,27 +54,27 @@ def list_my_restaurants(
 
 @router.get("/{restaurant_id}", response_model=RestaurantResponse)
 def get_restaurant(
-    restaurant_id: int,
+    restaurant_id: UUID,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get a specific restaurant."""
     restaurant_service = RestaurantService(db)
     restaurant = restaurant_service.get_restaurant_by_id(restaurant_id)
-    
+
     if not restaurant:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Restaurant not found"
         )
-    
+
     # Customers cannot see blocked restaurants
     if restaurant.is_blocked and current_user.role == UserRole.CUSTOMER:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Restaurant not found"
         )
-    
+
     return restaurant
 
 
@@ -91,7 +92,7 @@ def create_restaurant(
 
 @router.put("/{restaurant_id}", response_model=RestaurantResponse)
 def update_restaurant(
-    restaurant_id: int,
+    restaurant_id: UUID,
     restaurant_data: RestaurantUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -104,7 +105,7 @@ def update_restaurant(
 
 @router.delete("/{restaurant_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_restaurant(
-    restaurant_id: int,
+    restaurant_id: UUID,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

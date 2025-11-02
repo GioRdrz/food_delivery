@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from uuid import UUID
 
 from app.database import get_db
 from app.schemas.order import OrderCreate, OrderResponse, OrderStatusUpdate
@@ -64,27 +65,27 @@ def list_my_orders(
 
 @router.get("/restaurant/{restaurant_id}", response_model=List[OrderResponse])
 def list_restaurant_orders(
-    restaurant_id: int,
+    restaurant_id: UUID,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """List orders for a specific restaurant (owner or admin only)."""
     restaurant_service = RestaurantService(db)
     restaurant = restaurant_service.get_restaurant_by_id(restaurant_id)
-    
+
     if not restaurant:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Restaurant not found"
         )
-    
+
     # Check permissions
     if current_user.role != UserRole.ADMIN and restaurant.owner_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions"
         )
-    
+
     order_service = OrderService(db)
     orders = order_service.get_orders_by_restaurant(restaurant_id)
     return orders
@@ -92,7 +93,7 @@ def list_restaurant_orders(
 
 @router.get("/{order_id}", response_model=OrderResponse)
 def get_order(
-    order_id: int,
+    order_id: UUID,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -138,7 +139,7 @@ def create_order(
 
 @router.patch("/{order_id}/status", response_model=OrderResponse)
 def update_order_status(
-    order_id: int,
+    order_id: UUID,
     status_data: OrderStatusUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -151,7 +152,7 @@ def update_order_status(
 
 @router.delete("/{order_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_order(
-    order_id: int,
+    order_id: UUID,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

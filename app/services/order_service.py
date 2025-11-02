@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from decimal import Decimal
 from datetime import datetime
+from uuid import UUID
 
 from app.models.order import Order, OrderItem, OrderStatusHistory, OrderStatus
 from app.models.user import User, UserRole
@@ -24,19 +25,19 @@ class OrderService:
         self.restaurant_service = RestaurantService(db)
         self.coupon_service = CouponService(db)
     
-    def get_order_by_id(self, order_id: int) -> Optional[Order]:
+    def get_order_by_id(self, order_id: UUID) -> Optional[Order]:
         """Get an order by ID."""
         return self.db.query(Order).filter(Order.id == order_id).first()
-    
+
     def get_orders(self, skip: int = 0, limit: int = 100) -> List[Order]:
         """Get all orders with pagination."""
         return self.db.query(Order).offset(skip).limit(limit).all()
-    
-    def get_orders_by_customer(self, customer_id: int) -> List[Order]:
+
+    def get_orders_by_customer(self, customer_id: UUID) -> List[Order]:
         """Get all orders for a specific customer."""
         return self.db.query(Order).filter(Order.customer_id == customer_id).all()
-    
-    def get_orders_by_restaurant(self, restaurant_id: int) -> List[Order]:
+
+    def get_orders_by_restaurant(self, restaurant_id: UUID) -> List[Order]:
         """Get all orders for a specific restaurant."""
         return self.db.query(Order).filter(Order.restaurant_id == restaurant_id).all()
     
@@ -150,7 +151,7 @@ class OrderService:
         self.db.refresh(db_order)
         return db_order
     
-    def update_order_status(self, order_id: int, status_data: OrderStatusUpdate, current_user: User) -> Order:
+    def update_order_status(self, order_id: UUID, status_data: OrderStatusUpdate, current_user: User) -> Order:
         """Update order status with permission and workflow validation."""
         db_order = self.get_order_by_id(order_id)
         if not db_order:
@@ -233,21 +234,21 @@ class OrderService:
         
         # Admin can do anything (no additional checks needed)
     
-    def delete_order(self, order_id: int, current_user: User) -> bool:
+    def delete_order(self, order_id: UUID, current_user: User) -> bool:
         """Delete an order (admin only)."""
         if current_user.role != UserRole.ADMIN:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Only admins can delete orders"
             )
-        
+
         db_order = self.get_order_by_id(order_id)
         if not db_order:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Order not found"
             )
-        
+
         self.db.delete(db_order)
         self.db.commit()
         return True

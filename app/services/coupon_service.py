@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from uuid import UUID
 
 from app.models.coupon import Coupon
 from app.schemas.coupon import CouponCreate, CouponUpdate
@@ -15,7 +16,7 @@ class CouponService:
     def __init__(self, db: Session):
         self.db = db
     
-    def get_coupon_by_id(self, coupon_id: int) -> Optional[Coupon]:
+    def get_coupon_by_id(self, coupon_id: UUID) -> Optional[Coupon]:
         """Get a coupon by ID."""
         return self.db.query(Coupon).filter(Coupon.id == coupon_id).first()
     
@@ -46,7 +47,7 @@ class CouponService:
         self.db.refresh(db_coupon)
         return db_coupon
     
-    def update_coupon(self, coupon_id: int, coupon_data: CouponUpdate) -> Coupon:
+    def update_coupon(self, coupon_id: UUID, coupon_data: CouponUpdate) -> Coupon:
         """Update a coupon."""
         db_coupon = self.get_coupon_by_id(coupon_id)
         if not db_coupon:
@@ -73,7 +74,7 @@ class CouponService:
         self.db.refresh(db_coupon)
         return db_coupon
     
-    def delete_coupon(self, coupon_id: int) -> bool:
+    def delete_coupon(self, coupon_id: UUID) -> bool:
         """Delete a coupon."""
         db_coupon = self.get_coupon_by_id(coupon_id)
         if not db_coupon:
@@ -81,7 +82,7 @@ class CouponService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Coupon not found"
             )
-        
+
         self.db.delete(db_coupon)
         self.db.commit()
         return True

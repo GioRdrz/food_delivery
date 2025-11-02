@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from uuid import UUID
 
 from app.database import get_db
 from app.schemas.coupon import CouponCreate, CouponUpdate, CouponResponse
@@ -30,20 +31,20 @@ def list_coupons(
 
 @router.get("/{coupon_id}", response_model=CouponResponse)
 def get_coupon(
-    coupon_id: int,
+    coupon_id: UUID,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
     """Get a specific coupon (admin only)."""
     coupon_service = CouponService(db)
     coupon = coupon_service.get_coupon_by_id(coupon_id)
-    
+
     if not coupon:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Coupon not found"
         )
-    
+
     return coupon
 
 
@@ -61,7 +62,7 @@ def create_coupon(
 
 @router.put("/{coupon_id}", response_model=CouponResponse)
 def update_coupon(
-    coupon_id: int,
+    coupon_id: UUID,
     coupon_data: CouponUpdate,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
@@ -74,7 +75,7 @@ def update_coupon(
 
 @router.delete("/{coupon_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_coupon(
-    coupon_id: int,
+    coupon_id: UUID,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):

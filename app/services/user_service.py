@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from uuid import UUID
 
 from app.models.user import User, UserRole
 from app.schemas.user import UserCreate, UserUpdate
@@ -26,7 +27,7 @@ class UserService:
             logger.debug(f"User not found for email: {email}")
         return user
     
-    def get_user_by_id(self, user_id: int) -> Optional[User]:
+    def get_user_by_id(self, user_id: UUID) -> Optional[User]:
         """Get a user by ID."""
         logger.debug(f"Fetching user by ID: {user_id}")
         user = self.db.query(User).filter(User.id == user_id).first()
@@ -70,7 +71,7 @@ class UserService:
         logger.info(f"User created successfully: ID={db_user.id}, email={db_user.email}")
         return db_user
     
-    def update_user(self, user_id: int, user_data: UserUpdate) -> User:
+    def update_user(self, user_id: UUID, user_data: UserUpdate) -> User:
         """Update a user."""
         logger.info(f"Updating user: {user_id}")
 
@@ -106,7 +107,7 @@ class UserService:
         logger.info(f"User updated successfully: {user_id}")
         return db_user
     
-    def delete_user(self, user_id: int) -> bool:
+    def delete_user(self, user_id: UUID) -> bool:
         """Delete a user."""
         logger.info(f"Deleting user: {user_id}")
 

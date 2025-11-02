@@ -1,8 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+import uuid
 
 from app.main import app
 from app.database import Base, get_db
@@ -10,6 +11,8 @@ from app.models.user import UserRole
 from app.services.user_service import UserService
 
 # Create in-memory SQLite database for testing
+# Note: We use PostgreSQL in production, but SQLite for tests
+# SQLite doesn't support UUID natively, so we store them as strings
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
 engine = create_engine(
@@ -17,6 +20,14 @@ engine = create_engine(
     connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
+
+# Enable foreign key constraints in SQLite
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_conn, connection_record):
+    cursor = dbapi_conn.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
