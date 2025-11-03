@@ -1,0 +1,1793 @@
+{
+	"info": {
+		"_postman_id": "food-delivery-api-collection",
+		"name": "Food Delivery Service API",
+		"description": "Comprehensive API collection for the Food Delivery Service. This collection demonstrates all API endpoints including authentication, user management, restaurant operations, meal management, order processing, and admin capabilities.\n\n**Base URL:** http://localhost:8000\n\n**Test Credentials:**\n- Admin: admin@fooddelivery.com / admin123\n- Customer 1: customer1@example.com / password123\n- Customer 2: customer2@example.com / password123\n- Owner 1: owner1@example.com / password123\n- Owner 2: owner2@example.com / password123",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "customer1_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "customer2_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "owner1_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "owner2_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "restaurant1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "restaurant2_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "meal1_1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "meal1_2_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "meal2_1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "order1_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "order2_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "coupon_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_user_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('admin_token', jsonData.access_token);",
+									"    pm.collectionVariables.set('auth_token', jsonData.access_token);",
+									"    console.log('Admin token saved:', jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@fooddelivery.com\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login as admin to get JWT token for admin operations"
+					},
+					"response": []
+				},
+				{
+					"name": "Register Customer 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('customer1_id', jsonData.id);",
+									"    console.log('Customer 1 ID saved:', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer1@example.com\",\n    \"password\": \"password123\",\n    \"full_name\": \"Alice Johnson\",\n    \"role\": \"customer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Register a new customer account"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Customer 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('customer1_token', jsonData.access_token);",
+									"    console.log('Customer 1 token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer1@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login as Customer 1 to get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Register Customer 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('customer2_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer2@example.com\",\n    \"password\": \"password123\",\n    \"full_name\": \"Bob Smith\",\n    \"role\": \"customer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Customer 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('customer2_token', jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer2@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user registration and login"
+		},
+		{
+			"name": "1. Authentication (continued)",
+			"item": [
+				{
+					"name": "Register Restaurant Owner 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('owner1_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"owner1@example.com\",\n    \"password\": \"password123\",\n    \"full_name\": \"Carlos Martinez\",\n    \"role\": \"restaurant_owner\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Restaurant Owner 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('owner1_token', jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"owner1@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Restaurant Owner 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('owner2_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"owner2@example.com\",\n    \"password\": \"password123\",\n    \"full_name\": \"Diana Chen\",\n    \"role\": \"restaurant_owner\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Restaurant Owner 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('owner2_token', jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"owner2@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Coupons (Admin)",
+			"item": [
+				{
+					"name": "Create Coupon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('coupon_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"WELCOME10\",\n    \"discount_percentage\": 10.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/coupons/",
+							"host": ["{{base_url}}"],
+							"path": ["coupons", ""]
+						},
+						"description": "Create a 10% discount coupon (admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Coupons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/coupons/",
+							"host": ["{{base_url}}"],
+							"path": ["coupons", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Coupon by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/coupons/{{coupon_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["coupons", "{{coupon_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Coupon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"discount_percentage\": 15.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/coupons/{{coupon_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["coupons", "{{coupon_id}}"]
+						},
+						"description": "Update coupon discount to 15%"
+					},
+					"response": []
+				}
+			],
+			"description": "Coupon management endpoints (admin only)"
+		},
+		{
+			"name": "3. Restaurants",
+			"item": [
+				{
+					"name": "Create Restaurant 1 (Bella Italia)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('restaurant1_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Bella Italia\",\n    \"description\": \"Authentic Italian cuisine with fresh ingredients\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurants/",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Restaurant 2 (Dragon Wok)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('restaurant2_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Dragon Wok\",\n    \"description\": \"Modern Asian fusion with traditional flavors\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurants/",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Restaurants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurants/",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurants/{{restaurant1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "{{restaurant1_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Restaurants (Owner)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurants/my-restaurants",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "my-restaurants"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Meals",
+			"item": [
+				{
+					"name": "Create Meal 1.1 (Margherita Pizza)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('meal1_1_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Margherita Pizza\",\n    \"description\": \"Classic pizza with tomato, mozzarella, and basil\",\n    \"price\": 12.99,\n    \"restaurant_id\": \"{{restaurant1_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Meal 1.2 (Spaghetti Carbonara)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('meal1_2_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Spaghetti Carbonara\",\n    \"description\": \"Creamy pasta with bacon and parmesan\",\n    \"price\": 14.99,\n    \"restaurant_id\": \"{{restaurant1_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Meal 1.3 (Tiramisu)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tiramisu\",\n    \"description\": \"Classic Italian dessert\",\n    \"price\": 6.99,\n    \"restaurant_id\": \"{{restaurant1_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Meal 2.1 (Pad Thai)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('meal2_1_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pad Thai\",\n    \"description\": \"Stir-fried rice noodles with shrimp and peanuts\",\n    \"price\": 13.99,\n    \"restaurant_id\": \"{{restaurant2_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Meals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/meals/",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meals by Restaurant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/meals/restaurant/{{restaurant1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["meals", "restaurant", "{{restaurant1_id}}"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Orders",
+			"item": [
+				{
+					"name": "Create Order 1 (with coupon)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('order1_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant_id\": \"{{restaurant1_id}}\",\n    \"items\": [\n        {\"meal_id\": \"{{meal1_1_id}}\", \"quantity\": 1},\n        {\"meal_id\": \"{{meal1_2_id}}\", \"quantity\": 1}\n    ],\n    \"tip_amount\": 3.00,\n    \"coupon_code\": \"WELCOME10\",\n    \"delivery_address\": \"123 Main St, City, State 12345\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", ""]
+						},
+						"description": "Customer 1 creates order from Bella Italia with 10% coupon"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order 2 (no coupon)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('order2_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant_id\": \"{{restaurant2_id}}\",\n    \"items\": [\n        {\"meal_id\": \"{{meal2_1_id}}\", \"quantity\": 1}\n    ],\n    \"tip_amount\": 2.00,\n    \"delivery_address\": \"123 Main St, City, State 12345\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", ""]
+						},
+						"description": "Customer 1 creates order from Dragon Wok"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status to PROCESSING",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"processing\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/{{order1_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "{{order1_id}}", "status"]
+						},
+						"description": "Restaurant owner updates order status to PROCESSING"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status to IN_ROUTE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"in_route\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/{{order1_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "{{order1_id}}", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status to DELIVERED",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"delivered\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/{{order1_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "{{order1_id}}", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status to RECEIVED",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"received\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/{{order1_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "{{order1_id}}", "status"]
+						},
+						"description": "Customer confirms receipt of order"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Orders (Customer)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/my-orders",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "my-orders"]
+						},
+						"description": "Customer views their order history"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant Orders (Owner)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{owner1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/restaurant/{{restaurant1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "restaurant", "{{restaurant1_id}}"]
+						},
+						"description": "Restaurant owner views orders for their restaurant"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/{{order1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "{{order1_id}}"]
+						},
+						"description": "Get order details including status history"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Users (Admin)",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{customer1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/me",
+							"host": ["{{base_url}}"],
+							"path": ["users", "me"]
+						},
+						"description": "Get current authenticated user info"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Users (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": ["{{base_url}}"],
+							"path": ["users", ""]
+						},
+						"description": "Admin lists all users in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('test_user_id', jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"password123\",\n    \"full_name\": \"Test User\",\n    \"role\": \"customer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": ["{{base_url}}"],
+							"path": ["users", ""]
+						},
+						"description": "Admin creates a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{test_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["users", "{{test_user_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block User (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{test_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["users", "{{test_user_id}}"]
+						},
+						"description": "Admin blocks a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock User (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{test_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["users", "{{test_user_id}}"]
+						},
+						"description": "Admin unblocks a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{test_user_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["users", "{{test_user_id}}"]
+						},
+						"description": "Admin deletes a user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. Admin Operations (Blocking)",
+			"item": [
+				{
+					"name": "Block Restaurant (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurants/{{restaurant2_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "{{restaurant2_id}}"]
+						},
+						"description": "Admin blocks a restaurant"
+					},
+					"response": []
+				},
+				{
+					"name": "List Restaurants (Include Blocked)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurants/?include_blocked=true",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", ""],
+							"query": [
+								{
+									"key": "include_blocked",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Admin views all restaurants including blocked ones"
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock Restaurant (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurants/{{restaurant2_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "{{restaurant2_id}}"]
+						},
+						"description": "Admin unblocks a restaurant"
+					},
+					"response": []
+				},
+				{
+					"name": "Block Meal (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/{{meal2_1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["meals", "{{meal2_1_id}}"]
+						},
+						"description": "Admin blocks a meal"
+					},
+					"response": []
+				},
+				{
+					"name": "List Meals (Include Blocked)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/meals/?include_blocked=true",
+							"host": ["{{base_url}}"],
+							"path": ["meals", ""],
+							"query": [
+								{
+									"key": "include_blocked",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Admin views all meals including blocked ones"
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock Meal (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_blocked\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/meals/{{meal2_1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["meals", "{{meal2_1_id}}"]
+						},
+						"description": "Admin unblocks a meal"
+					},
+					"response": []
+				},
+				{
+					"name": "View All Orders (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", ""]
+						},
+						"description": "Admin views all orders in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Restaurant (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurants/{{restaurant1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "{{restaurant1_id}}"]
+						},
+						"description": "Admin deletes a restaurant"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Meal (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/meals/{{meal1_1_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["meals", "{{meal1_1_id}}"]
+						},
+						"description": "Admin deletes a meal"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Coupon (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/coupons/{{coupon_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["coupons", "{{coupon_id}}"]
+						},
+						"description": "Admin deletes a coupon"
+					},
+					"response": []
+				}
+			],
+			"description": "Admin operations for blocking/unblocking and deleting resources"
+		}
+	]
+}
