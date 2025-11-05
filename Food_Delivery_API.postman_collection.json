@@ -145,7 +145,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('customer1_id', jsonData.id);",
 									"    console.log('Customer 1 ID saved:', jsonData.id);",
@@ -227,7 +227,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('customer2_id', jsonData.id);",
 									"}"
@@ -311,7 +311,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('owner1_id', jsonData.id);",
 									"}"
@@ -389,7 +389,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('owner2_id', jsonData.id);",
 									"}"
@@ -472,7 +472,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('coupon_id', jsonData.id);",
 									"}"
@@ -604,7 +604,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('restaurant1_id', jsonData.id);",
 									"}"
@@ -650,7 +650,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('restaurant2_id', jsonData.id);",
 									"}"
@@ -770,7 +770,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('meal1_1_id', jsonData.id);",
 									"}"
@@ -816,7 +816,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('meal1_2_id', jsonData.id);",
 									"}"
@@ -894,7 +894,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('meal2_1_id', jsonData.id);",
 									"}"
@@ -991,7 +991,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('order1_id', jsonData.id);",
 									"}"
@@ -1038,7 +1038,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('order2_id', jsonData.id);",
 									"}"
@@ -1340,7 +1340,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
+									"if (pm.response.code === 201) {",
 									"    var jsonData = pm.response.json();",
 									"    pm.collectionVariables.set('test_user_id', jsonData.id);",
 									"}"
